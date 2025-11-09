@@ -5,15 +5,15 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema banco_pi
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `banco_pi` DEFAULT CHARACTER SET utf8 ;
+USE `banco_pi` ;
 
 -- -----------------------------------------------------
 -- Table `Fornecedores`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Fornecedores` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Fornecedores` (
   `CNPJ_FORNECEDOR` INT UNSIGNED NOT NULL,
   `Nome` VARCHAR(75) NOT NULL,
   `email` VARCHAR(120) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Fornecedores` (
 -- -----------------------------------------------------
 -- Table `Logística`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Logística` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Logística` (
   `id_ordem` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Data_prevista` DATE NOT NULL,
   `Comprovante_entrega` VARCHAR(30) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Logística` (
 -- -----------------------------------------------------
 -- Table `Municípios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Municípios` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Municípios` (
   `id_Municipios` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `numero` INT NOT NULL,
   `Cidade` VARCHAR(50) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Municípios` (
   INDEX `idx_municipios_id_ordem` (`id_ordem` ASC) VISIBLE,
   CONSTRAINT `fk_municipios_logistica`
     FOREIGN KEY (`id_ordem`)
-    REFERENCES `mydb`.`Logística` (`id_ordem`)
+    REFERENCES `banco_pi`.`Logística` (`id_ordem`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Municípios` (
 -- -----------------------------------------------------
 -- Table `Espécies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Espécies` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Espécies` (
   `id_especies` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Tipo_esp` VARCHAR(60) NOT NULL,
   PRIMARY KEY (`id_especies`)
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Espécies` (
 -- -----------------------------------------------------
 -- Table `Endereço_agricultor`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Endereço_agricultor` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Endereço_agricultor` (
   `id_endereco` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Rua` TEXT NOT NULL,
   `CEP` VARCHAR(15) NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Endereço_agricultor` (
 -- -----------------------------------------------------
 -- Table `Agricultores`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Agricultores` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Agricultores` (
   `CNPJ` VARCHAR(15) NOT NULL,
   `Nome` VARCHAR(120) NOT NULL,
   `email` VARCHAR(120) NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Agricultores` (
   INDEX `idx_agricultores_id_endereco` (`id_endereco` ASC) VISIBLE,
   CONSTRAINT `fk_agricultores_endereco`
     FOREIGN KEY (`id_endereco`)
-    REFERENCES `mydb`.`Endereço_agricultor` (`id_endereco`)
+    REFERENCES `banco_pi`.`Endereço_agricultor` (`id_endereco`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Agricultores` (
 -- -----------------------------------------------------
 -- Table `Entrega`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Entrega` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Entrega` (
   `id_entrega` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Quantidade` INT NOT NULL,
   `Destinátario` VARCHAR(120) NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Entrega` (
 -- -----------------------------------------------------
 -- Table `Rastreabilidade`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Rastreabilidade` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Rastreabilidade` (
   `QR_lote` INT UNSIGNED NOT NULL,
   `Entrada` DATE NOT NULL,
   `Saida` DATE NULL,
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Rastreabilidade` (
 -- -----------------------------------------------------
 -- Table `Lotes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Lotes` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Lotes` (
   `Numero_lote` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Especie` VARCHAR(45) NOT NULL,
   `Validade` DATE NOT NULL,
@@ -130,12 +130,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Lotes` (
   INDEX `idx_lotes_qr_lote` (`QR_lote` ASC) VISIBLE,
   CONSTRAINT `fk_lotes_entrega`
     FOREIGN KEY (`id_entrega`)
-    REFERENCES `mydb`.`Entrega` (`id_entrega`)
+    REFERENCES `banco_pi`.`Entrega` (`id_entrega`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_lotes_rastreabilidade`
     FOREIGN KEY (`QR_lote`)
-    REFERENCES `mydb`.`Rastreabilidade` (`QR_lote`)
+    REFERENCES `banco_pi`.`Rastreabilidade` (`QR_lote`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Lotes` (
 -- -----------------------------------------------------
 -- Table `Armazéns`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Armazéns` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Armazéns` (
   `id_armazem` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Tipo_produto` VARCHAR(60) NOT NULL,
   `Quantidade` INT NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Armazéns` (
   INDEX `idx_armazens_numero_lote` (`Numero_lote` ASC) VISIBLE,
   CONSTRAINT `fk_armazens_lotes`
     FOREIGN KEY (`Numero_lote`)
-    REFERENCES `mydb`.`Lotes` (`Numero_lote`)
+    REFERENCES `banco_pi`.`Lotes` (`Numero_lote`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Armazéns` (
 -- -----------------------------------------------------
 -- Table `Cadastro`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Cadastro` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Cadastro` (
   `id_municipio` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_especies` INT UNSIGNED NOT NULL,
   `CNPJ_FORNECODR` INT UNSIGNED NOT NULL,
@@ -177,27 +177,27 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cadastro` (
   INDEX `idx_cadastro_id_armazem` (`id_armazem` ASC) VISIBLE,
   CONSTRAINT `fk_cadastro_municipios`
     FOREIGN KEY (`id_municipio`)
-    REFERENCES `mydb`.`Municípios` (`id_Municipios`)
+    REFERENCES `banco_pi`.`Municípios` (`id_Municipios`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cadastro_especies`
     FOREIGN KEY (`id_especies`)
-    REFERENCES `mydb`.`Espécies` (`id_especies`)
+    REFERENCES `banco_pi`.`Espécies` (`id_especies`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cadastro_fornecedores`
     FOREIGN KEY (`CNPJ_FORNECODR`)
-    REFERENCES `mydb`.`Fornecedores` (`CNPJ_FORNECEDOR`)
+    REFERENCES `banco_pi`.`Fornecedores` (`CNPJ_FORNECEDOR`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cadastro_agricultores`
     FOREIGN KEY (`CNPJ`)
-    REFERENCES `mydb`.`Agricultores` (`CNPJ`)
+    REFERENCES `banco_pi`.`Agricultores` (`CNPJ`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cadastro_armazens`
     FOREIGN KEY (`id_armazem`)
-    REFERENCES `mydb`.`Armazéns` (`id_armazem`)
+    REFERENCES `banco_pi`.`Armazéns` (`id_armazem`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cadastro` (
 -- -----------------------------------------------------
 -- Table `Movimentações`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Movimentações` (
+CREATE TABLE IF NOT EXISTS `banco_pi`.`Movimentações` (
   `id_lote` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Entrada` DATE NOT NULL,
   `Saida` DATE NULL,
@@ -217,12 +217,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Movimentações` (
   INDEX `idx_movimentacoes_id_armazem` (`id_armazem` ASC) VISIBLE,
   CONSTRAINT `fk_movimentacoes_numero_lote`
     FOREIGN KEY (`Numero_lote`)
-    REFERENCES `mydb`.`Lotes` (`Numero_lote`)
+    REFERENCES `banco_pi`.`Lotes` (`Numero_lote`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
    CONSTRAINT `fk_movimentacoes_id_armazem`
     FOREIGN KEY (`id_armazem`)
-    REFERENCES `mydb`.`Armazéns` (`id_armazem`)
+    REFERENCES `banco_pi`.`Armazéns` (`id_armazem`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
