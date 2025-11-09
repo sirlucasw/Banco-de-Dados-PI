@@ -174,8 +174,7 @@ INSERT INTO `banco_pi`.`Lotes` (`Especie`, `Validade`, `Quantidade`, `id_entrega
 ('Cana-de-Açúcar', '2025-11-01', 12000, 19, 19),
 ('Ervilha', '2025-05-15', 2000, 20, 20);
 
-ALTER TABLE `banco_pi`.`Agricultores`
-MODIFY COLUMN `CNPJ` VARCHAR(18) NOT NULL;
+
 INSERT INTO `banco_pi`.`Agricultores` (`CNPJ`, `Nome`, `email`, `id_endereco`) VALUES
 ('35.215.158/0002-10', 'Agropecuária Santos Ltda', 'contato@agrosantos.com', 1),
 ('22.333.444/0002-81', 'Fazenda do Chico Ltda', 'chico@fazenda.com.br', 2),
@@ -198,8 +197,7 @@ INSERT INTO `banco_pi`.`Agricultores` (`CNPJ`, `Nome`, `email`, `id_endereco`) V
 ('22.111.000/0001-89', 'Sítio do Alemão', 'alemao@sitio.com', 19),
 ('11.000.999/0001-78', 'Cooperativa Brasília Orgânicos', 'coopbsb@organicos.com', 20);
 
-ALTER TABLE `banco_pi`.`Armazéns`
-MODIFY COLUMN `Unidade_medida` VARCHAR(10) NOT NULL;
+
 INSERT INTO `banco_pi`.`Armazéns` (`Tipo_produto`, `Quantidade`, `Unidade_medida`, `data_validade`, `Data_cadastro`, `Status_produto`, `Numero_lote`) VALUES
 ('Grãos', 2500, 'KG', '2025-06-30', '2024-09-01', 'Em Estoque', 1),
 ('Grãos', 3000, 'KG', '2025-05-30', '2024-08-20', 'Em Estoque', 2),
