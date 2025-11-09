@@ -1,0 +1,82 @@
+ Principais Entidades e Atributos
+1. Espécies
+
+Atributos: id_especie, tipo_esp.
+
+Representa as espécies de sementes cadastradas (ex: milho, soja, trigo).
+
+Está relacionada às produções e cadastros feitos pelos agricultores.
+
+2. Agricultores
+
+Atributos: CNPJ, Nome, Endereço, E-mail.
+
+São os responsáveis pela produção das sementes, que posteriormente são cadastradas e rastreadas pelo sistema.
+
+3. Cadastro
+
+Atributos: id_cadastro, id_especie, id_fornecedor, id_armazem, id_municipio, id_agricultor.
+
+É uma entidade central, pois integra as informações de espécie, produtor, localidade e armazenamento.
+
+Atua como um registro de referência entre diversas tabelas.
+
+4. Municípios
+
+Atributos: id_municipio, Número, Cidade, Logradouro, CEP, Estado, Complemento.
+
+Armazena os dados geográficos e endereços dos locais onde ocorrem as produções e armazenamentos.
+
+5. Fornecedores
+
+Atributos: CNPJ_FORNECEDOR, Nome, E-mail, Status, Data_cadastro, Tipo_producao.
+
+Representa empresas ou produtores que fornecem sementes ou insumos.
+
+Está ligada ao cadastro e também participa das movimentações logísticas.
+
+6. Armazéns
+
+Atributos: CNPJ, Tipo_produto, Quantidade, Unidade_medida, Data_validade, Data_cadastro, Status.
+
+Indica os locais onde as sementes são armazenadas.
+
+Possui relação com movimentações, cadastro e estoque.
+
+7. Movimentações
+
+Atributos: id_lote, Entrada, Saída, Transferência, Saldo_armazem.
+
+Registra as operações de entrada, saída e transferência de lotes entre armazéns.
+
+Controla o saldo atual de cada produto armazenado.
+
+8. Logística
+
+Atributos: id_ordem, Data_prevista, Comprovante_entrega.
+
+Representa o planejamento das entregas e o acompanhamento do transporte.
+
+É criada com base nas ordens de entrega e rastreabilidade.
+
+9. Rastreabilidade
+
+Atributos: QR_lote, Entrada, Saída, Entrega.
+
+Permite o rastreamento completo do lote, associando o produto às etapas de transporte e armazenamento.
+
+Está ligada a Lotes e Entregas, garantindo o controle do fluxo do produto.
+
+10. Lotes
+
+Atributos: num_lote, Espécie, Validade, Quantidade.
+
+Cada lote representa uma unidade de produção identificável.
+
+Está diretamente relacionado à rastreabilidade e à entrega final.
+
+11. Entrega
+
+Atributos: id_entrega, Quantidade, Destinatário, Comprovante.
+
+Registra as entregas concluídas, vinculando o lote, o destino e a comprovação de recebimento.
