@@ -1,0 +1,98 @@
+Tabelas e seus Atributos
+1. Espécies
+
+Campos: id_especies (PK), Tipo_esp.
+
+Armazena as diferentes espécies de sementes cadastradas no sistema (ex: soja, milho, arroz).
+
+2. Agricultores
+
+Campos: CNPJ (PK), Nome, Email, id_endereco (FK).
+
+Contém os dados dos agricultores responsáveis pela produção das sementes.
+
+Relaciona-se à tabela Endereço_agricultor, onde estão os detalhes de localização.
+
+3. Endereco_agricultor
+
+Campos: id_endereco (PK), Rua, CEP, Numero, UF, Complemento.
+
+Guarda o endereço completo do agricultor, permitindo que o sistema tenha rastreabilidade geográfica.
+
+4. Municípios
+
+Campos: id_Municipios (PK), num, Cidade, Logradouro, CEP, Estado, Complemento, id_ordem (FK).
+
+Armazena informações de localização e logística dos municípios envolvidos no processo.
+
+5. Logística
+
+Campos: id_ordem (PK), Data_prevista, Comprovante_entrega.
+
+Controla as ordens logísticas, incluindo datas e comprovantes de entrega.
+
+Está ligada à tabela Municípios para identificar o local de operação.
+
+6. Fornecedores
+
+Campos: CNPJ_FORNECEDOR (PK), Nome, Email, Status, Data_cadastro, Tipo_producao.
+
+Registra os fornecedores de sementes ou insumos, com suas informações cadastrais e status.
+
+7. Cadastro
+
+Campos:
+
+id_municipio (FK)
+
+id_especies (FK)
+
+CNPJ_FORNECEDOR (FK)
+
+CNPJ (FK)
+
+id_arm_azem (FK)
+
+Tabela associativa central, conectando agricultores, espécies, fornecedores, armazéns e municípios.
+
+Serve como registro principal de vinculação entre todos os participantes da cadeia de produção e distribuição.
+
+8. Armazéns
+
+Campos: id_arm_azem (PK), Tipo_produto, Quantidade, Unidade_medida, Data_validade, Data_cadastro, Status_produto, Numero_lote (FK).
+
+Representa os locais de armazenamento das sementes, com controle de quantidade, tipo e validade.
+
+Relaciona-se com lotes e movimentações.
+
+9. Movimentações
+
+Campos: id_lote (PK), Entrada, Saida, Saldo_arm_azem, Numero_lote (FK).
+
+Controla o fluxo de entrada e saída de produtos dos armazéns.
+
+Permite rastrear transferências e saldo atual de estoque.
+
+10. Lotes
+
+Campos: Numero_lote (PK), Especie, Validade, Quantidade, id_entrega (FK), QR_lote.
+
+Cada registro representa um lote de sementes identificado por um QR Code.
+
+Conecta-se às tabelas de rastreabilidade e entrega, permitindo o controle total do ciclo do produto.
+
+11. Rastreabilidade
+
+Campos: QR_lote (PK), Entrada, Saida, Entrega.
+
+Registra o caminho percorrido pelo lote, da origem até o destino final.
+
+Está diretamente ligada à tabela Lotes, garantindo o rastreamento em tempo real.
+
+12. Entrega
+
+Campos: id_entrega (PK), Quantidade, Destinatario, Comprovante, Numero_lote (FK).
+
+Registra as entregas concluídas e gera comprovantes associados aos lotes.
+
+Conecta a rastreabilidade com o processo final de distribuição.
