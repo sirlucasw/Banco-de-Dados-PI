@@ -3,88 +3,59 @@ SELECT A.Nome, E.Rua, E.numero, E.UF, E.Complemento
 FROM Agricultores A
 INNER JOIN Endereço_agricultor E ON A.id_endereco = E.id_endereco;
 
--- 2. Mostrar cidade e data prevista de entrega
-SELECT M.Cidade, M.Estado, L.Data_prevista, L.Comprovante_entrega
-FROM Municípios M
-INNER JOIN Logística L ON M.id_ordem = L.id_ordem;
 
--- 3. Exibir informações dos lotes com o destino da entrega
+-- 2. Exibir informações dos lotes com o destino da entrega
 SELECT L.Numero_lote, L.Especie, E.Destinátario, E.Comprovante
 FROM Lotes L
 INNER JOIN Entrega E ON L.id_entrega = E.id_entrega;
 
--- 4. Consultar as datas de rastreio de cada lote
+
+-- 3. Consultar as datas de rastreio de cada lote
 SELECT L.Numero_lote, L.Especie, R.Entrada, R.Saida, R.Entrega
 FROM Lotes L
 INNER JOIN Rastreabilidade R ON L.QR_lote = R.QR_lote;
 
--- 5. Mostrar produtos armazenados e seus respectivos lotes
+
+-- 4. Mostrar produtos armazenados e seus respectivos lotes
 SELECT A.id_armazem, A.Tipo_produto, A.Quantidade, L.Especie, L.Validade
 FROM Armazéns A
 INNER JOIN Lotes L ON A.Numero_lote = L.Numero_lote;
 
--- 6. Exibir movimentações de entrada e saída por armazém
+
+-- 5. Exibir movimentações de entrada e saída por armazém
 SELECT M.id_armazem, M.Entrada, M.Saida, M.Saldo_armazem, A.Tipo_produto
 FROM Movimentações M
 INNER JOIN Armazéns A ON M.id_armazem = A.id_armazem;
 
--- 7. Listar produtos, espécie e destinatário da entrega
+
+-- 6. Listar produtos, espécie e destinatário da entrega
 SELECT A.Tipo_produto, L.Especie, E.Destinátario
 FROM Armazéns A
 INNER JOIN Lotes L ON A.Numero_lote = L.Numero_lote
 INNER JOIN Entrega E ON L.id_entrega = E.id_entrega;
 
--- 8. Relacionar cidade, status logístico e entrega prevista
-SELECT M.Cidade, L.Comprovante_entrega, E.Destinátario
-FROM Municípios M
-INNER JOIN Logística L ON M.id_ordem = L.id_ordem
-INNER JOIN Entrega E ON E.id_entrega = M.id_Municipios;
 
--- 9. Mostrar agricultores e a cidade em que estão localizados
+-- 7. Mostrar agricultores e a cidade em que estão localizados
 SELECT A.Nome AS Agricultor, M.Cidade, M.Estado
 FROM Agricultores A
 INNER JOIN Endereço_agricultor E ON A.id_endereco = E.id_endereco
 INNER JOIN Municípios M ON M.id_Municipios = A.id_endereco;
 
--- 10. Exibir rastreamento completo de cada entrega
+
+-- 8. Exibir rastreamento completo de cada entrega
 SELECT L.Numero_lote, R.Entrada, R.Saida, R.Entrega, E.Destinátario
 FROM Lotes L
 INNER JOIN Rastreabilidade R ON L.QR_lote = R.QR_lote
 INNER JOIN Entrega E ON L.id_entrega = E.id_entrega;
 
--- 11. Exibir fornecedores que constam no cadastro geral
-SELECT F.Nome, F.Tipo_producao, C.id_especies
-FROM Fornecedores F
-INNER JOIN Cadastro C ON F.CNPJ_FORNECEDOR = C.CNPJ_FORNECODR;
 
--- 12. Relacionar espécie com o código de cadastro
-SELECT E.Tipo_esp, C.id_municipio
-FROM Espécies E
-INNER JOIN Cadastro C ON E.id_especies = C.id_especies;
-
--- 13. Mostrar quais agricultores possuem cadastro ativo
-SELECT A.Nome, A.email, C.id_especies
-FROM Agricultores A
-INNER JOIN Cadastro C ON A.CNPJ = C.CNPJ;
-
--- 14. Relacionar armazéns vinculados ao cadastro
-SELECT C.id_municipio, A.Tipo_produto, A.Status_produto
-FROM Cadastro C
-INNER JOIN Armazéns A ON C.id_armazem = A.id_armazem;
-
--- 15. Mostrar fornecedores e as espécies que produzem
-SELECT F.Nome AS Fornecedor, E.Tipo_esp
-FROM Cadastro C
-INNER JOIN Fornecedores F ON C.CNPJ_FORNECODR = F.CNPJ_FORNECEDOR
-INNER JOIN Espécies E ON C.id_especies = E.id_especies;
-
--- 16. Exibir movimentações de cada lote em estoque
+-- 9. Exibir movimentações de cada lote em estoque
 SELECT L.Numero_lote, A.Tipo_produto, M.Entrada, M.Saida, M.Saldo_armazem
 FROM Armazéns A
 INNER JOIN Movimentações M ON A.id_armazem = M.id_armazem
 INNER JOIN Lotes L ON A.Numero_lote = L.Numero_lote;
 
--- 17. Exibir data prevista e status logístico de entregas
+-- 10. Exibir data prevista e status logístico de entregas
 SELECT E.id_entrega, L.Data_prevista, L.Comprovante_entrega
 FROM Entrega E
 INNER JOIN Logística L ON E.id_entrega = L.id_ordem;
