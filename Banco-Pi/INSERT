@@ -20,7 +20,7 @@ INSERT INTO FORNECEDORES (`CNPJ_FORNECEDOR`, `Nome`, `email`, `Status`, `Data_ca
 (100000019, 'Energia Solar Rural', 'contato@solarural.com', 'Ativo', '2023-04-03', 'Placas Solares'),
 (100000020, 'Software Fazenda', 'suporte@softwarefaz.com.br', 'Ativo', '2022-06-28', 'Software de Gestão Agrícola');
 
-INSERT INTO `banco_pi`.`Logística` (`Data_prevista`, `Comprovante_entrega`) VALUES
+INSERT INTO `banco_pi`.`Logistica` (`Data_prevista`, `Comprovante_entrega`) VALUES
 ('2024-11-20', 'ENTREGUE_OK'),
 ('2024-11-25', 'EM_TRANSITO'),
 ('2024-11-22', 'ENTREGUE_OK'),
@@ -42,7 +42,7 @@ INSERT INTO `banco_pi`.`Logística` (`Data_prevista`, `Comprovante_entrega`) VAL
 ('2025-02-15', 'ENTREGUE_OK'),
 ('2025-02-20', 'ENTREGUE_PENDENTE');
 
-INSERT INTO `banco_pi`.`Municípios` (`numero`, `Cidade`, `Logradouro`, `CEP`, `Estado`, `Complemento`, `id_ordem`) VALUES
+INSERT INTO `banco_pi`.`Municipios` (`numero`, `Cidade`, `Logradouro`, `CEP`, `Estado`, `Complemento`, `id_ordem`) VALUES
 (320, 'Osasco', 'Rua Doutor Silva, 320', '06000-000', 'SP', 'Próximo ao Mercado Central', 21),
 (150, 'Niterói', 'Avenida das Águas, 150', '24000-000', 'RJ', 'Bloco B, Térreo', 22),
 (67, 'Contagem', 'Rua dos Pinheiros, 67', '32000-000', 'MG', 'Galpão Lateral', 23),
@@ -64,7 +64,7 @@ INSERT INTO `banco_pi`.`Municípios` (`numero`, `Cidade`, `Logradouro`, `CEP`, `
 (101, 'Macapá', 'Rodovia Norte-Sul, 101', '68900-000', 'AP', 'Kilômetro 5', 39),
 (66, 'Boa Vista', 'Avenida do Forte, 66', '69300-000', 'RR', 'Região de fronteira', 40);
 
-INSERT INTO `banco_pi`.`Espécies` (`Tipo_esp`) VALUES
+INSERT INTO `banco_pi`.`Especies` (`Tipo_esp`) VALUES
 ('Pimenta do Reino'),
 ('Gengibre'),
 ('Coco - Seco'),
@@ -86,7 +86,7 @@ INSERT INTO `banco_pi`.`Espécies` (`Tipo_esp`) VALUES
 ('Teca - Madeira Nobre'),
 ('Guaraná');
 
-INSERT INTO `banco_pi`.`Endereço_agricultor` (`Rua`, `CEP`, `numero`, `UF`, `Complemento`) VALUES
+INSERT INTO `banco_pi`.`Endereco_agricultor` (`Rua`, `CEP`, `numero`, `UF`, `Complemento`) VALUES
 ('Estrada do Cedro, KM 5', '78000-010', 500, 'MT', 'Fazenda Bom Retiro'),
 ('Rua das Acácias, S/N', '69300-100', 80, 'RR', 'Chácara São Pedro'),
 ('Av. Central, Lote 12', '77000-020', 12, 'TO', 'Galpão 3'),
@@ -108,7 +108,7 @@ INSERT INTO `banco_pi`.`Endereço_agricultor` (`Rua`, `CEP`, `numero`, `UF`, `Co
 ('Rua da Piscina, Lote 3', '90000-900', 3, 'RS', 'Chácara do Pedro'),
 ('Estrada Velha de Goiás, S/N', '72000-001', 222, 'DF', 'Propriedade Familiar');
 
-INSERT INTO `banco_pi`.`Entrega` (`Quantidade`, `Destinátario`, `Comprovante`) VALUES
+INSERT INTO `banco_pi`.`Entrega` (`Quantidade`, `Destinatario`, `Comprovante`) VALUES
 (500, 'Distribuidor Central SP', 'NF-001234'),
 (1200, 'Atacado de Cereais LTDA', 'NF-001235'),
 (3000, 'Indústria Alimentícia A', 'NF-001236'),
@@ -198,7 +198,7 @@ INSERT INTO `banco_pi`.`Agricultores` (`CNPJ`, `Nome`, `email`, `id_endereco`) V
 ('11.000.999/0001-78', 'Cooperativa Brasília Orgânicos', 'coopbsb@organicos.com', 20);
 
 
-INSERT INTO `banco_pi`.`Armazéns` (`Tipo_produto`, `Quantidade`, `Unidade_medida`, `data_validade`, `Data_cadastro`, `Status_produto`, `Numero_lote`) VALUES
+INSERT INTO `banco_pi`.`Armazens` (`Tipo_produto`, `Quantidade`, `Unidade_medida`, `data_validade`, `Data_cadastro`, `Status_produto`, `Numero_lote`) VALUES
 ('Grãos', 2500, 'KG', '2025-06-30', '2024-09-01', 'Em Estoque', 1),
 ('Grãos', 3000, 'KG', '2025-05-30', '2024-08-20', 'Em Estoque', 2),
 ('Grãos', 500, 'Sacas', '2026-12-31', '2024-10-01', 'Em Estoque', 3),
@@ -220,7 +220,7 @@ INSERT INTO `banco_pi`.`Armazéns` (`Tipo_produto`, `Quantidade`, `Unidade_medid
 ('Cana', 6000, 'Toneladas', '2025-11-01', '2024-11-10', 'Em Estoque', 19),
 ('Grãos', 1000, 'KG', '2025-05-15', '2024-07-20', 'Baixo Estoque', 20);
 
-INSERT INTO `banco_pi`.`Movimentações` (`Entrada`, `Saida`, `Saldo_armazem`, `Numero_lote`, `id_armazem`) VALUES 
+INSERT INTO `banco_pi`.`Movimentacoes` (`Entrada`, `Saida`, `Saldo_armazem`, `Numero_lote`, `id_armazem`) VALUES 
 ('2024-09-01', '2024-09-15', 2500, 1, 1), 
 ('2024-08-20', '2024-09-10', 3000, 2, 2), 
 ('2024-10-01', NULL, 500, 3, 3), 
