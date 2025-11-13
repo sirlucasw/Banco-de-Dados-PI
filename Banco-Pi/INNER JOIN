@@ -1,186 +1,568 @@
--- 1. Exibir nome do agricultor com seu respectivo endereço completo
-SELECT A.Nome, E.Rua, E.numero, E.UF, E.Complemento
-FROM Agricultores A
-INNER JOIN Endereço_agricultor E ON A.id_endereco = E.id_endereco;
+-- 1. Agricultores e seus Endereços
+-- Objetivo: Listar o nome do agricultor e seu endereço completo.
+SELECT
+    A.Nome AS Nome_Agricultor,
+    E.Rua,
+    E.numero,
+    E.Complemento,
+    E.CEP,
+    E.UF
+FROM
+    Agricultores A
+INNER JOIN
+    Endereco_agricultor E ON A.id_endereco = E.id_endereco;
 
-
--- 2. Exibir informações dos lotes com o destino da entrega
-SELECT L.Numero_lote, L.Especie, E.Destinátario, E.Comprovante
-FROM Lotes L
-INNER JOIN Entrega E ON L.id_entrega = E.id_entrega;
-
-
--- 3. Consultar as datas de rastreio de cada lote
-SELECT L.Numero_lote, L.Especie, R.Entrada, R.Saida, R.Entrega
-FROM Lotes L
-INNER JOIN Rastreabilidade R ON L.QR_lote = R.QR_lote;
-
-
--- 4. Mostrar produtos armazenados e seus respectivos lotes
-SELECT A.id_armazem, A.Tipo_produto, A.Quantidade, L.Especie, L.Validade
-FROM Armazéns A
-INNER JOIN Lotes L ON A.Numero_lote = L.Numero_lote;
-
-
--- 5. Exibir movimentações de entrada e saída por armazém
-SELECT M.id_armazem, M.Entrada, M.Saida, M.Saldo_armazem, A.Tipo_produto
-FROM Movimentações M
-INNER JOIN Armazéns A ON M.id_armazem = A.id_armazem;
-
-
--- 6. Listar produtos, espécie e destinatário da entrega
-SELECT A.Tipo_produto, L.Especie, E.Destinátario
-FROM Armazéns A
-INNER JOIN Lotes L ON A.Numero_lote = L.Numero_lote
-INNER JOIN Entrega E ON L.id_entrega = E.id_entrega;
-
-
--- 7. Mostrar agricultores e a cidade em que estão localizados
-SELECT A.Nome AS Agricultor, M.Cidade, M.Estado
-FROM Agricultores A
-INNER JOIN Endereço_agricultor E ON A.id_endereco = E.id_endereco
-INNER JOIN Municípios M ON M.id_Municipios = A.id_endereco;
-
-
--- 8. Exibir rastreamento completo de cada entrega
-SELECT L.Numero_lote, R.Entrada, R.Saida, R.Entrega, E.Destinátario
-FROM Lotes L
-INNER JOIN Rastreabilidade R ON L.QR_lote = R.QR_lote
-INNER JOIN Entrega E ON L.id_entrega = E.id_entrega;
-
-
--- 9. Exibir movimentações de cada lote em estoque
-SELECT L.Numero_lote, A.Tipo_produto, M.Entrada, M.Saida, M.Saldo_armazem
-FROM Armazéns A
-INNER JOIN Movimentações M ON A.id_armazem = M.id_armazem
-INNER JOIN Lotes L ON A.Numero_lote = L.Numero_lote;
-
--- 10. Exibir data prevista e status logístico de entregas
-SELECT E.id_entrega, L.Data_prevista, L.Comprovante_entrega
-FROM Entrega E
-INNER JOIN Logística L ON E.id_entrega = L.id_ordem;
-
-USE banco_pi;
-
--- 1️ View: Agricultores e seus endereços completos
-CREATE OR REPLACE VIEW vw_agricultores_enderecos AS
-SELECT 
-    A.Nome, 
-    E.Rua, 
-    E.numero, 
-    E.UF, 
-    E.Complemento
-FROM Agricultores A
-INNER JOIN Endereço_agricultor E 
-    ON A.id_endereco = E.id_endereco;
-
--- 2️ View: Lotes e informações de entrega
-CREATE OR REPLACE VIEW vw_lotes_entregas AS
-SELECT 
-    L.Numero_lote, 
-    L.Especie, 
-    E.Destinátario, 
+-- 2. Lotes e suas Entregas
+-- Objetivo: Listar a espécie do lote, a quantidade e o destinatário da entrega.
+SELECT
+    L.Especie,
+    L.Quantidade AS Quantidade_Lote,
+    E.Destinatario,
     E.Comprovante
-FROM Lotes L
-INNER JOIN Entrega E 
-    ON L.id_entrega = E.id_entrega;
+FROM
+    Lotes L
+INNER JOIN
+    Entrega E ON L.id_entrega = E.id_entrega;
 
--- 3️ View: Datas de rastreabilidade por lote
-CREATE OR REPLACE VIEW vw_lotes_rastreabilidade AS
-SELECT 
-    L.Numero_lote, 
-    L.Especie, 
-    R.Entrada, 
-    R.Saida, 
-    R.Entrega
-FROM Lotes L
-INNER JOIN Rastreabilidade R 
-    ON L.QR_lote = R.QR_lote;
+-- 3. Lotes e sua Rastreabilidade
+-- Objetivo: Rastrear a entrada, saída e entrega prevista de um lote específico.
+SELECT
+    L.Especie,
+    R.Entrada AS Data_Entrada_Rastreio,
+    R.Saida AS Data_Saida_Rastreio,
+    R.Entrega AS Data_Entrega_Rastreio
+FROM
+    Lotes L
+INNER JOIN
+    Rastreabilidade R ON L.QR_lote = R.QR_lote;
 
--- 4️ View: Produtos armazenados e seus lotes
-CREATE OR REPLACE VIEW vw_produtos_armazenados AS
-SELECT 
-    A.id_armazem, 
-    A.Tipo_produto, 
-    A.Quantidade, 
-    L.Especie, 
+-- 4. Armazéns e Lotes
+-- Objetivo: Listar o tipo de produto no armazém e a espécie do lote correspondente.
+SELECT
+    A.Tipo_produto,
+    A.Quantidade AS Quantidade_Armazem,
+    L.Especie,
     L.Validade
-FROM Armazéns A
-INNER JOIN Lotes L 
-    ON A.Numero_lote = L.Numero_lote;
+FROM
+    Armazens A
+INNER JOIN
+    Lotes L ON A.Numero_lote = L.QR_lote;
 
--- 5️ View: Movimentações por armazém
-CREATE OR REPLACE VIEW vw_movimentacoes_armazem AS
-SELECT 
-    M.id_armazem, 
-    M.Entrada, 
-    M.Saida, 
-    M.Saldo_armazem, 
-    A.Tipo_produto
-FROM Movimentações M
-INNER JOIN Armazéns A 
-    ON M.id_armazem = A.id_armazem;
+-- 5. Movimentações e Armazéns
+-- Objetivo: Detalhar as movimentações (entrada/saída) e o tipo de produto do armazém.
+SELECT
+    M.Entrada AS Data_Mov_Entrada,
+    M.Saida AS Data_Mov_Saida,
+    M.Saldo_armazem,
+    A.Tipo_produto,
+    A.Unidade_medida
+FROM
+    Movimentacoes M
+INNER JOIN
+    Armazens A ON M.id_armazem = A.id_armazem;
 
--- 6️ View: Produtos, espécie e destinatário da entrega
-CREATE OR REPLACE VIEW vw_produtos_entregas AS
-SELECT 
-    A.Tipo_produto, 
-    L.Especie, 
-    E.Destinátario
-FROM Armazéns A
-INNER JOIN Lotes L 
-    ON A.Numero_lote = L.Numero_lote
-INNER JOIN Entrega E 
-    ON L.id_entrega = E.id_entrega;
+-- 6. Lotes e Espécies (Substitui a consulta problemática com Logistica)
+-- Objetivo: Listar todos os lotes e o nome completo da espécie.
+SELECT
+    L.Especie AS Nome_Lote,
+    L.Validade,
+    ES.Tipo_esp AS Especie_Detalhada
+FROM
+    Lotes L
+INNER JOIN
+    Especies ES ON L.Especie = ES.Tipo_esp;
 
--- 7️ View: Agricultores e cidade (corrigido relacionamento)
-CREATE OR REPLACE VIEW vw_agricultores_cidades AS
-SELECT 
-    A.Nome AS Agricultor, 
-    M.Cidade, 
-    M.Estado
-FROM Agricultores A
-INNER JOIN Endereço_agricultor E 
-    ON A.id_endereco = E.id_endereco
-INNER JOIN Municípios M 
-    ON M.id_Municipios = E.id_endereco;
+-- 7. Fornecedores com Status 'Em Análise' e Data de Cadastro.
+-- Objetivo: Listar fornecedores com status 'Em Análise'.
+SELECT
+    Nome,
+    email,
+    Data_cadastro,
+    Tipo_producao
+FROM
+    FORNECEDORES
+WHERE
+    Status = 'Em Análise';
 
--- 8️ View: Rastreamento completo de cada entrega
-CREATE OR REPLACE VIEW vw_rastreamento_entregas AS
-SELECT 
-    L.Numero_lote, 
-    R.Entrada, 
-    R.Saida, 
-    R.Entrega, 
-    E.Destinátario
-FROM Lotes L
-INNER JOIN Rastreabilidade R 
-    ON L.QR_lote = R.QR_lote
-INNER JOIN Entrega E 
-    ON L.id_entrega = E.id_entrega;
+-- 8. Lotes, Rastreabilidade e Entregas (JOIN Triplo)
+-- Objetivo: Rastrear um lote desde a entrada até o destinatário final.
+SELECT
+    L.Especie,
+    R.Entrada AS Data_Entrada_Lote,
+    R.Entrega AS Data_Prevista_Rastreio,
+    E.Destinatario,
+    E.Comprovante
+FROM
+    Lotes L
+INNER JOIN
+    Rastreabilidade R ON L.QR_lote = R.QR_lote
+INNER JOIN
+    Entrega E ON L.id_entrega = E.id_entrega;
 
--- 9️ View: Movimentações de lotes em estoque
-CREATE OR REPLACE VIEW vw_movimentacoes_lotes AS
-SELECT 
-    L.Numero_lote, 
-    A.Tipo_produto, 
-    M.Entrada, 
-    M.Saida, 
-    M.Saldo_armazem
-FROM Armazéns A
-INNER JOIN Movimentações M 
-    ON A.id_armazem = M.id_armazem
-INNER JOIN Lotes L 
-    ON A.Numero_lote = L.Numero_lote;
+-- 9. Armazéns, Lotes e Espécies
+-- Objetivo: Listar produtos no armazém e o tipo de espécie correspondente.
+SELECT
+    A.Tipo_produto,
+    A.Quantidade AS Quantidade_Armazem,
+    L.Especie AS Nome_Lote,
+    ES.Tipo_esp AS Especie_Detalhada
+FROM
+    Armazens A
+INNER JOIN
+    Lotes L ON A.Numero_lote = L.QR_lote
+INNER JOIN
+    Especies ES ON L.Especie = ES.Tipo_esp;
 
--- 10 View: Status logístico das entregas
-CREATE OR REPLACE VIEW vw_status_logistica AS
-SELECT 
-    E.id_entrega, 
-    L.Data_prevista, 
+-- 10. Lotes e Armazéns com Status 'Reservado'
+-- Objetivo: Listar lotes que estão reservados no armazém.
+SELECT
+    L.Especie,
+    L.Quantidade AS Quantidade_Lote,
+    A.Tipo_produto,
+    A.Status_produto
+FROM
+    Lotes L
+INNER JOIN
+    Armazens A ON L.QR_lote = A.Numero_lote
+WHERE
+    A.Status_produto = 'Reservado';
+
+-- 11. Lotes com Quantidade acima de 5000.
+-- Objetivo: Listar lotes com grande volume.
+SELECT
+    L.Especie,
+    L.Quantidade,
+    L.Validade
+FROM
+    Lotes L
+WHERE
+    L.Quantidade > 5000;
+
+-- 12. Fornecedores e Logística (Simulação: F-- 12. Agricultores e Endereços no Paraná (PR)
+-- Objetivo: Listar agricultores localizados no estado do Paraná.
+SELECT
+    A.Nome AS Nome_Agricultor,
+    A.CNPJ,
+    E.Rua,
+    E.numero,
+    E.UF
+FROM
+    Agricultores A
+INNER JOIN
+    Endereco_agricultor E ON A.id_endereco = E.id_endereco
+WHERE
+    E.UF = 'PR';
+
+-- 13. Lotes com Validade Próxima (JOIN com Armazéns)
+-- Objetivo: Listar lotes no armazém com validade antes de 2025-03-01.
+SELECT
+    L.Especie,
+    L.Validade,
+    A.Tipo_produto,
+    A.Status_produto
+FROM
+    Lotes L
+INNER JOIN
+    Armazens A ON L.QR_lote = A.Numero_lote
+WHERE
+    L.Validade < '2025-03-01';
+
+-- 14. Movimentações de Lotes com Saldo Baixo (JOIN com Armazéns)
+-- Objetivo: Listar movimentações de produtos com status de "Baixo Estoque" no armazém.
+SELECT
+    M.Entrada,
+    M.Saida,
+    A.Tipo_produto,
+    A.Status_produto
+FROM
+    Movimentacoes M
+INNER JOIN
+    Armazens A ON M.id_armazem = A.id_armazem
+WHERE
+    A.Status_produto = 'Baixo Estoque';
+
+-- 15. Agricultores em São Paulo (SP) e seus Endereços
+-- Objetivo: Listar agricultores localizados no estado de SP.
+SELECT
+    A.Nome AS Nome_Agricultor,
+    A.email,
+    E.Rua,
+    E.numero
+FROM
+    Agricultores A
+INNER JOIN
+    Endereco_agricultor E ON A.id_endereco = E.id_endereco
+WHERE
+    E.UF = 'SP';
+
+-- 16. Lotes e Movimentações (Substitui a consulta problemática com Logistica)
+-- Objetivo: Listar a espécie do lote e as datas de entrada e saída no armazém.
+SELECT
+    L.Especie,
+    L.Quantidade,
+    M.Entrada AS Data_Entrada_Armazem,
+    M.Saida AS Data_Saida_Armazem
+FROM
+    Lotes L
+INNER JOIN
+    Movimentacoes M ON L.QR_lote = M.Numero_lote;
+
+-- 17. Lotes de Grãos no Armazém
+-- Objetivo: Listar todos os lotes classificados como 'Grãos' no armazém.
+SELECT
+    L.Especie,
+    L.Quantidade AS Quantidade_Lote,
+    A.Tipo_produto,
+    A.Status_produto
+FROM
+    Lotes L
+INNER JOIN
+    Armazens A ON L.QR_lote = A.Numero_lote
+WHERE
+    A.Tipo_produto = 'Grãos';
+
+-- 18. Rastreabilidade de Lotes que Ainda Não Saíram (Saida IS NULL)
+-- Objetivo: Listar lotes que entraram, mas ainda não foram registrados como saída.
+SELECT
+    R.QR_lote,
+    R.Entrada,
+    L.Especie,
+    L.Quantidade
+FROM
+    Rastreabilidade R
+INNER JOIN
+    Lotes L ON R.QR_lote = L.QR_lote
+WHERE
+    R.Saida IS NULL;
+
+-- 19. Fornecedores Ativos e seus Tipos de Produção
+-- Objetivo: Listar fornecedores com status 'Ativo' e seus tipos de produção.
+SELECT
+    F.Nome AS Nome_Fornecedor,
+    F.Tipo_producao,
+    F.Data_cadastro
+FROM
+    FORNECEDORES F
+WHERE
+    F.Status = 'Ativo';
+
+-- 20. Agricultores com Endereço no estado de Minas Gerais (MG).
+-- Objetivo: Listar agricultores localizados no estado de MG.
+SELECT
+    A.Nome AS Nome_Agricultor,
+    A.email,
+    E.Rua,
+    E.numero
+FROM
+    Agricultores A
+INNER JOIN
+    Endereco_agricultor E ON A.id_endereco = E.id_endereco
+WHERE
+    E.UF = 'MG';
+
+-- 10 Definições de VIEWS baseadas na estrutura SQL fornecida
+
+-- 1. VIEW_AGRICULTORES_ENDERECO
+-- Objetivo: Visualizar o nome, e-mail do agricultor e seu endereço completo.
+CREATE VIEW VIEW_AGRICULTORES_ENDERECO AS
+SELECT
+    A.Nome AS Nome_Agricultor,
+    A.email,
+    E.Rua,
+    E.numero,
+    E.Complemento,
+    E.CEP,
+    E.UF
+FROM
+    Agricultores A
+INNER JOIN
+    Endereco_agricultor E ON A.id_endereco = E.id_endereco;
+
+-- 2. VIEW_RASTREAMENTO_COMPLETO
+-- Objetivo: Visualizar o rastreamento completo de um lote, incluindo espécie, datas de movimentação e entrega.
+CREATE VIEW VIEW_RASTREAMENTO_COMPLETO AS
+SELECT
+    L.Especie,
+    L.Quantidade AS Quantidade_Lote,
+    R.Entrada AS Data_Entrada_Rastreio,
+    R.Saida AS Data_Saida_Rastreio,
+    R.Entrega AS Data_Entrega_Rastreio,
+    E.Destinatario,
+    E.Comprovante AS NF_Entrega
+FROM
+    Lotes L
+INNER JOIN
+    Rastreabilidade R ON L.QR_lote = R.QR_lote
+INNER JOIN
+    Entrega E ON L.id_entrega = E.id_entrega;
+
+-- 3. VIEW_ESTOQUE_BAIXO
+-- Objetivo: Visualizar todos os produtos no armazém com status de "Baixo Estoque".
+CREATE VIEW VIEW_ESTOQUE_BAIXO AS
+SELECT
+    A.Tipo_produto,
+    A.Quantidade,
+    A.Unidade_medida,
+    A.data_validade,
+    A.Data_cadastro,
+    L.Especie AS Lote_Especie
+FROM
+    Armazens A
+INNER JOIN
+    Lotes L ON A.Numero_lote = L.QR_lote
+WHERE
+    A.Status_produto = 'Baixo Estoque';
+
+-- 4. VIEW_ENTREGAS_CONCLUIDAS_LOGISTICA
+-- Objetivo: Visualizar todas as informações de logística para entregas concluídas.
+CREATE VIEW VIEW_ENTREGAS_CONCLUIDAS_LOGISTICA AS
+SELECT
+    L.Data_prevista,
     L.Comprovante_entrega
-FROM Entrega E
-INNER JOIN Logística L 
-    ON E.id_entrega = L.id_ordem;
+FROM
+    Logistica L
+WHERE
+    L.Comprovante_entrega = 'ENTREGUE_OK';
 
+-- 5. VIEW_FORNECEDORES_ATIVOS
+-- Objetivo: Visualizar apenas os fornecedores com status 'Ativo'.
+CREATE VIEW VIEW_FORNECEDORES_ATIVOS AS
+SELECT
+    Nome,
+    email,
+    Data_cadastro,
+    Tipo_producao
+FROM
+    FORNECEDORES
+WHERE
+    Status = 'Ativo';
 
+-- 6. VIEW_PRODUTOS_VALIDADE_PROXIMA
+-- Objetivo: Visualizar lotes com validade antes de 2025-03-01.
+CREATE VIEW VIEW_PRODUTOS_VALIDADE_PROXIMA AS
+SELECT
+    L.Especie,
+    L.Validade,
+    L.Quantidade,
+    A.Tipo_produto,
+    A.Status_produto
+FROM
+    Lotes L
+INNER JOIN
+    Armazens A ON L.QR_lote = A.Numero_lote
+WHERE
+    L.Validade < '2025-03-01';
+
+-- 7. VIEW_MOVIMENTACOES_PENDENTES
+-- Objetivo: Visualizar movimentações de lotes que entraram no armazém, mas ainda não têm registro de saída.
+CREATE VIEW VIEW_MOVIMENTACOES_PENDENTES AS
+SELECT
+    R.QR_lote,
+    L.Especie,
+    L.Quantidade,
+    R.Entrada AS Data_Entrada_Rastreio,
+    M.Entrada AS Data_Entrada_Movimentacao,
+    M.Saldo_armazem
+FROM
+    Rastreabilidade R
+INNER JOIN
+    Lotes L ON R.QR_lote = L.QR_lote
+INNER JOIN
+    Movimentacoes M ON R.QR_lote = M.Numero_lote
+WHERE
+    R.Saida IS NULL;
+
+-- 8. VIEW_ENTREGAS_EM_TRANSITO_LOGISTICA
+-- Objetivo: Visualizar todas as informações de logística para entregas em trânsito.
+CREATE VIEW VIEW_ENTREGAS_EM_TRANSITO_LOGISTICA AS
+SELECT
+    L.Data_prevista,
+    L.Comprovante_entrega
+FROM
+    Logistica L
+WHERE
+    L.Comprovante_entrega = 'EM_TRANSITO';
+
+-- 9. VIEW_AGRICULTORES_SP
+-- Objetivo: Visualizar agricultores localizados no estado de São Paulo (SP).
+CREATE VIEW VIEW_AGRICULTORES_SP AS
+SELECT
+    A.Nome AS Nome_Agricultor,
+    A.CNPJ,
+    A.email,
+    E.Rua,
+    E.numero,
+    E.CEP
+FROM
+    Agricultores A
+INNER JOIN
+    Endereco_agricultor E ON A.id_endereco = E.id_endereco
+WHERE
+    E.UF = 'SP';
+
+-- 10. VIEW_PRODUTOS_PECUARIA
+-- Objetivo: Visualizar todos os produtos classificados como 'Carne/Pecuária' no armazém.
+CREATE VIEW VIEW_PRODUTOS_PECUARIA AS
+SELECT
+    A.Tipo_produto,
+    A.Quantidade,
+    A.Unidade_medida,
+    A.Status_produto,
+    L.Especie AS Lote_Especie,
+    L.Validade
+FROM
+    Armazens A
+INNER JOIN
+    Lotes L ON A.Numero_lote = L.QR_lote
+WHERE
+    A.Tipo_produto = 'Carne/Pecuária';
+
+-- 11. VIEW_LOTES_ENTREGAS (Baseada na Consulta 2)
+-- Objetivo: Visualizar a espécie do lote, a quantidade e o destinatário da entrega.
+DROP VIEW IF EXISTS VIEW_LOTES_ENTREGAS;
+CREATE VIEW VIEW_LOTES_ENTREGAS AS
+SELECT
+    L.Especie,
+    L.Quantidade AS Quantidade_Lote,
+    E.Destinatario,
+    E.Comprovante
+FROM
+    Lotes L
+INNER JOIN
+    Entrega E ON L.id_entrega = E.id_entrega;
+
+-- 12. VIEW_LOTES_RASTREABILIDADE (Baseada na Consulta 3)
+-- Objetivo: Rastrear a entrada, saída e entrega prevista de um lote específico.
+DROP VIEW IF EXISTS VIEW_LOTES_RASTREABILIDADE;
+CREATE VIEW VIEW_LOTES_RASTREABILIDADE AS
+SELECT
+    L.Especie,
+    R.Entrada AS Data_Entrada_Rastreio,
+    R.Saida AS Data_Saida_Rastreio,
+    R.Entrega AS Data_Entrega_Rastreio
+FROM
+    Lotes L
+INNER JOIN
+    Rastreabilidade R ON L.QR_lote = R.QR_lote;
+
+-- 13. VIEW_ARMAZENS_LOTES (Baseada na Consulta 4)
+-- Objetivo: Listar o tipo de produto no armazém e a espécie do lote correspondente.
+DROP VIEW IF EXISTS VIEW_ARMAZENS_LOTES;
+CREATE VIEW VIEW_ARMAZENS_LOTES AS
+SELECT
+    A.Tipo_produto,
+    A.Quantidade AS Quantidade_Armazem,
+    L.Especie,
+    L.Validade
+FROM
+    Armazens A
+INNER JOIN
+    Lotes L ON A.Numero_lote = L.QR_lote;
+
+-- 14. VIEW_MOVIMENTACOES_ARMAZENS (Baseada na Consulta 5)
+-- Objetivo: Detalhar as movimentações (entrada/saída) e o tipo de produto do armazém.
+DROP VIEW IF EXISTS VIEW_MOVIMENTACOES_ARMAZENS;
+CREATE VIEW VIEW_MOVIMENTACOES_ARMAZENS AS
+SELECT
+    M.Entrada AS Data_Mov_Entrada,
+    M.Saida AS Data_Mov_Saida,
+    M.Saldo_armazem,
+    A.Tipo_produto,
+    A.Unidade_medida
+FROM
+    Movimentacoes M
+INNER JOIN
+    Armazens A ON M.id_armazem = A.id_armazem;
+
+-- 15. VIEW_ARMAZENS_LOTES_ESPECIES (Baseada na Consulta 9)
+-- Objetivo: Listar produtos no armazém e o tipo de espécie correspondente.
+DROP VIEW IF EXISTS VIEW_ARMAZENS_LOTES_ESPECIES;
+CREATE VIEW VIEW_ARMAZENS_LOTES_ESPECIES AS
+SELECT
+    A.Tipo_produto,
+    A.Quantidade AS Quantidade_Armazem,
+    L.Especie AS Nome_Lote,
+    ES.Tipo_esp AS Especie_Detalhada
+FROM
+    Armazens A
+INNER JOIN
+    Lotes L ON A.Numero_lote = L.QR_lote
+INNER JOIN
+    Especies ES ON L.Especie = ES.Tipo_esp;
+
+-- 16. VIEW_LOTES_RESERVADOS (Baseada na Consulta 10)
+-- Objetivo: Listar lotes que estão reservados no armazém.
+DROP VIEW IF EXISTS VIEW_LOTES_RESERVADOS;
+CREATE VIEW VIEW_LOTES_RESERVADOS AS
+SELECT
+    L.Especie,
+    L.Quantidade AS Quantidade_Lote,
+    A.Tipo_produto,
+    A.Status_produto
+FROM
+    Lotes L
+INNER JOIN
+    Armazens A ON L.QR_lote = A.Numero_lote
+WHERE
+    A.Status_produto = 'Reservado';
+
+-- 17. VIEW_LOTES_GRANDE_VOLUME (Baseada na Consulta 11)
+-- Objetivo: Listar lotes com grande volume (Quantidade acima de 5000).
+DROP VIEW IF EXISTS VIEW_LOTES_GRANDE_VOLUME;
+CREATE VIEW VIEW_LOTES_GRANDE_VOLUME AS
+SELECT
+    L.Especie,
+    L.Quantidade,
+    L.Validade
+FROM
+    Lotes L
+WHERE
+    L.Quantidade > 5000;
+
+-- 18. VIEW_MOVIMENTACOES_BAIXO_ESTOQUE (Baseada na Consulta 14)
+-- Objetivo: Listar movimentações de produtos com status de "Baixo Estoque" no armazém.
+DROP VIEW IF EXISTS VIEW_MOVIMENTACOES_BAIXO_ESTOQUE;
+CREATE VIEW VIEW_MOVIMENTACOES_BAIXO_ESTOQUE AS
+SELECT
+    M.Entrada,
+    M.Saida,
+    A.Tipo_produto,
+    A.Status_produto
+FROM
+    Movimentacoes M
+INNER JOIN
+    Armazens A ON M.id_armazem = A.id_armazem
+WHERE
+    A.Status_produto = 'Baixo Estoque';
+
+-- 19. VIEW_LOTES_GRAOS (Baseada na Consulta 17)
+-- Objetivo: Listar todos os lotes classificados como 'Grãos' no armazém.
+DROP VIEW IF EXISTS VIEW_LOTES_GRAOS;
+CREATE VIEW VIEW_LOTES_GRAOS AS
+SELECT
+    L.Especie,
+    L.Quantidade AS Quantidade_Lote,
+    A.Tipo_produto,
+    A.Status_produto
+FROM
+    Lotes L
+INNER JOIN
+    Armazens A ON L.QR_lote = A.Numero_lote
+WHERE
+    A.Tipo_produto = 'Grãos';
+
+-- 20. VIEW_AGRICULTORES_MG (Baseada na Consulta 20)
+-- Objetivo: Listar agricultores localizados no estado de Minas Gerais (MG).
+DROP VIEW IF EXISTS VIEW_AGRICULTORES_MG;
+CREATE VIEW VIEW_AGRICULTORES_MG AS
+SELECT
+    A.Nome AS Nome_Agricultor,
+    A.email,
+    E.Rua,
+    E.numero
+FROM
+    Agricultores A
+INNER JOIN
+    Endereco_agricultor E ON A.id_endereco = E.id_endereco
+WHERE
+    E.UF = 'MG';
