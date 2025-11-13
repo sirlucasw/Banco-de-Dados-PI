@@ -3,5 +3,5 @@ drop database banco_pi;
 ALTER TABLE `banco_pi`.`Agricultores`
 MODIFY COLUMN `CNPJ` VARCHAR(18) NOT NULL;
 
-ALTER TABLE `banco_pi`.`Armazéns`
+ALTER TABLE `banco_pi`.`Armazens`
 MODIFY COLUMN `Unidade_medida` VARCHAR(10) NOT NULL;
