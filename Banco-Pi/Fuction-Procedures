@@ -1,0 +1,244 @@
+USE banco_pi;
+DELIMITER $$
+
+/* -----------------------------
+   FUNCOES (14)
+   ----------------------------- */
+
+
+CREATE FUNCTION fn_dias_validade(data_validade DATE)
+RETURNS INT
+DETERMINISTIC
+RETURN DATEDIFF(data_validade, CURDATE())$$
+
+
+CREATE FUNCTION fn_agricultores_por_estado(uf VARCHAR(2))
+RETURNS INT
+DETERMINISTIC
+RETURN (
+  SELECT COUNT(*) 
+  FROM Agricultores A
+  JOIN Endereco_agricultor E ON A.id_endereco = E.id_endereco
+  WHERE E.UF = uf
+)$$
+
+
+CREATE FUNCTION fn_status_logistico(p_id_ordem INT)
+RETURNS VARCHAR(100)
+DETERMINISTIC
+RETURN (
+  SELECT Comprovante_entrega
+  FROM Logistica
+  WHERE id_ordem = p_id_ordem
+  LIMIT 1
+)$$
+
+
+CREATE FUNCTION fn_total_estoque()
+RETURNS INT
+DETERMINISTIC
+RETURN (SELECT IFNULL(SUM(Quantidade),0) FROM Armazens)$$
+
+
+CREATE FUNCTION fn_nome_agricultor_por_cnpj(p_cnpj VARCHAR(30))
+RETURNS VARCHAR(200)
+DETERMINISTIC
+RETURN (
+  SELECT Nome FROM Agricultores WHERE CNPJ = p_cnpj LIMIT 1
+)$$
+
+
+CREATE FUNCTION fn_em_estoque(p_numero_lote INT)
+RETURNS VARCHAR(60)
+DETERMINISTIC
+RETURN (
+  SELECT Status_produto FROM Armazens WHERE Numero_lote = p_numero_lote LIMIT 1
+)$$
+
+
+CREATE FUNCTION fn_total_fornecedores_ativos()
+RETURNS INT
+DETERMINISTIC
+RETURN (SELECT COUNT(*) FROM Fornecedores WHERE Status = 'Ativo')$$
+
+
+CREATE FUNCTION fn_especie_por_numero_lote(p_numero_lote INT)
+RETURNS VARCHAR(200)
+DETERMINISTIC
+RETURN (
+  SELECT Especie FROM Lotes WHERE Numero_lote = p_numero_lote LIMIT 1
+)$$
+
+
+CREATE FUNCTION fn_saldo_armazem(p_id_armazem INT)
+RETURNS INT
+DETERMINISTIC
+RETURN (SELECT IFNULL(Quantidade,0) FROM Armazens WHERE id_armazem = p_id_armazem LIMIT 1)$$
+
+
+CREATE FUNCTION fn_status_fornecedor(p_cnpj_fornecedor BIGINT)
+RETURNS VARCHAR(40)
+DETERMINISTIC
+RETURN (SELECT Status FROM Fornecedores WHERE CNPJ_FORNECEDOR = p_cnpj_fornecedor LIMIT 1)$$
+
+
+CREATE FUNCTION fn_total_entregas_concluidas()
+RETURNS INT
+DETERMINISTIC
+RETURN (SELECT COUNT(*) FROM Logistica WHERE Comprovante_entrega = 'ENTREGUE_OK')$$
+
+
+CREATE FUNCTION fn_cidade_agricultor_por_cnpj(p_cnpj VARCHAR(30))
+RETURNS VARCHAR(100)
+DETERMINISTIC
+RETURN (
+  SELECT M.Cidade
+  FROM Cadastro C
+  JOIN Municipios M ON C.id_municipio = M.id_municipios
+  WHERE C.CNPJ = p_cnpj
+  LIMIT 1
+)$$
+
+
+CREATE FUNCTION fn_produtos_expirados()
+RETURNS INT
+DETERMINISTIC
+RETURN (SELECT COUNT(*) FROM Armazens WHERE Data_validade < CURDATE())$$
+
+
+CREATE FUNCTION fn_ultima_movimentacao()
+RETURNS DATE
+DETERMINISTIC
+RETURN (SELECT MAX(Saida) FROM Movimentacoes)$$
+
+/* -----------------------------
+   PROCEDURES (14)
+   ----------------------------- */
+
+
+CREATE PROCEDURE sp_nova_entrega(
+  IN p_qtd INT,
+  IN p_dest VARCHAR(200),
+  IN p_comp VARCHAR(80)
+)
+BEGIN
+  INSERT INTO Entrega (Quantidade, Destinatario, Comprovante)
+  VALUES (p_qtd, p_dest, p_comp);
+END$$
+
+
+CREATE PROCEDURE sp_atualizar_status_expirado()
+BEGIN
+  UPDATE Armazens
+  SET Status_produto = 'Expirado'
+  WHERE Data_validade < CURDATE();
+END$$
+
+DROP PROCEDURE IF EXISTS sp_listar_expirados$$
+CREATE PROCEDURE sp_listar_expirados()
+BEGIN
+  SELECT * FROM Armazens WHERE Data_validade < CURDATE();
+END$$
+
+
+CREATE PROCEDURE sp_vincular_logistica(
+  IN p_id_entrega INT,
+  IN p_id_ordem INT
+)
+BEGIN
+  -- associa explicitamente a entrega à ordem logística
+  UPDATE Entrega
+  SET id_ordem = p_id_ordem
+  WHERE id_entrega = p_id_entrega;
+END$$
+
+
+CREATE PROCEDURE sp_corrigir_email_agricultor()
+BEGIN
+  UPDATE Agricultores
+  SET Email = CONCAT(LOWER(REPLACE(Nome, ' ', '')), '@sememail.com')
+  WHERE Email IS NULL OR Email = '';
+END$$
+
+
+CREATE PROCEDURE sp_fornecedores_ativos()
+BEGIN
+  SELECT Nome, Tipo_producao, Data_cadastro FROM Fornecedores WHERE Status = 'Ativo';
+END$$
+
+
+CREATE PROCEDURE sp_novo_agricultor(
+  IN p_cnpj VARCHAR(30),
+  IN p_nome VARCHAR(200),
+  IN p_email VARCHAR(200),
+  IN p_id_endereco INT
+)
+BEGIN
+  INSERT INTO Agricultores (CNPJ, Nome, Email, id_endereco)
+  VALUES (p_cnpj, p_nome, p_email, p_id_endereco);
+END$$
+
+
+CREATE PROCEDURE sp_novo_fornecedor(
+  IN p_cnpj BIGINT,
+  IN p_nome VARCHAR(200),
+  IN p_email VARCHAR(200),
+  IN p_status VARCHAR(40),
+  IN p_tipo VARCHAR(100)
+)
+BEGIN
+  INSERT INTO Fornecedores (CNPJ_FORNECEDOR, Nome, Email, Status, Data_cadastro, Tipo_producao)
+  VALUES (p_cnpj, p_nome, p_email, p_status, CURDATE(), p_tipo);
+END$$
+
+
+CREATE PROCEDURE sp_atualizar_logistica(
+  IN p_id_ordem INT,
+  IN p_novo_status VARCHAR(100)
+)
+BEGIN
+  UPDATE Logistica
+  SET Comprovante_entrega = p_novo_status
+  WHERE id_ordem = p_id_ordem;
+END$$
+
+
+CREATE PROCEDURE sp_auditoria_movimentacoes()
+BEGIN
+  SELECT id_lote AS id_movimentacao, Entrada, Saida, Saldo_armazem, Numero_lote
+  FROM Movimentacoes
+  ORDER BY Entrada DESC;
+END$$
+
+
+CREATE PROCEDURE sp_media_estoque()
+BEGIN
+  SELECT AVG(Quantidade) AS MediaEstoque FROM Armazens;
+END$$
+
+
+CREATE PROCEDURE sp_relatorio_entregas()
+BEGIN
+  -- exige que Entrega.id_ordem exista e esteja populado
+  SELECT E.id_entrega, E.Quantidade, E.Destinatario, L.Data_prevista, L.Comprovante_entrega
+  FROM Entrega E
+  JOIN Logistica L ON E.id_ordem = L.id_ordem;
+END$$
+
+
+CREATE PROCEDURE sp_limpar_logistica_antiga()
+BEGIN
+  DELETE FROM Logistica WHERE Data_prevista < DATE_SUB(CURDATE(), INTERVAL 365 DAY);
+END$$
+
+
+CREATE PROCEDURE sp_agricultores_produtos()
+BEGIN
+  SELECT A.Nome AS Agricultor, L.Especie, Ar.Status_produto
+  FROM Agricultores A
+  JOIN Cadastro C ON A.CNPJ = C.CNPJ
+  JOIN Armazens Ar ON C.id_armazem = Ar.id_armazem
+  JOIN Lotes L ON Ar.Numero_lote = L.Numero_lote;
+END$$
+
+DELIMITER ;
