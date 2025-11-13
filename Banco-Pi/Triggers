@@ -1,0 +1,125 @@
+Delimiter $$
+
+-- 1 Registrar automaticamente data de cadastro de novo agricultor
+CREATE TRIGGER trg_agricultor_data_cadastro
+BEFORE INSERT ON Agricultores
+FOR EACH ROW
+SET NEW.email = IFNULL(NEW.email, CONCAT(LOWER(REPLACE(NEW.Nome, ' ', '')), '@sememail.com'));
+
+-- 2 Impedir inserção de fornecedor inativo com data futura
+CREATE TRIGGER trg_fornecedor_data
+BEFORE INSERT ON Fornecedores
+FOR EACH ROW
+BEGIN
+    IF NEW.Status = 'Inativo' AND NEW.Data_cadastro > CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Fornecedor inativo não pode ter data futura';
+    END IF;
+END$$
+
+-- 3 Log automático de entregas concluídas
+CREATE TRIGGER trg_entrega_concluida
+AFTER UPDATE ON Logistica
+FOR EACH ROW
+BEGIN
+    IF NEW.Comprovante_entrega = 'ENTREGUE_OK' THEN
+        INSERT INTO Movimentacoes (Entrada, Saida, Saldo_armazem, Numero_lote, id_armazem)
+        VALUES (CURDATE(), CURDATE(), 0, 1, 1);
+    END IF;
+END$$
+
+-- 4 Impedir estoque negativo
+CREATE TRIGGER trg_armazem_estoque_negativo
+BEFORE UPDATE ON Armazens
+FOR EACH ROW
+BEGIN
+    IF NEW.Quantidade < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Quantidade em estoque não pode ser negativa';
+    END IF;
+END$$
+
+-- 5 Atualizar status do produto quando quantidade < 100
+CREATE TRIGGER trg_status_baixo_estoque
+BEFORE UPDATE ON Armazens
+FOR EACH ROW
+BEGIN
+    IF NEW.Quantidade < 100 THEN
+        SET NEW.Status_produto = 'Baixo Estoque';
+    END IF;
+END$$
+
+-- 6 Atualizar automaticamente data de modificação de movimentação
+CREATE TRIGGER trg_movimentacao_update
+BEFORE UPDATE ON Movimentacoes
+FOR EACH ROW
+SET NEW.Saida = IFNULL(NEW.Saida, CURDATE());
+
+-- 7 Impedir registro de entrega sem destinatário
+CREATE TRIGGER trg_entrega_destinatario
+BEFORE INSERT ON Entrega
+FOR EACH ROW
+BEGIN
+    IF NEW.Destinatario IS NULL OR NEW.Destinatario = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Entrega deve ter destinatário válido';
+    END IF;
+END$$
+
+-- 8 Atualizar automaticamente status de produto ao expirar
+CREATE TRIGGER trg_armazem_expirado
+BEFORE UPDATE ON Armazens
+FOR EACH ROW
+BEGIN
+    IF NEW.data_validade < CURDATE() THEN
+        SET NEW.Status_produto = 'Expirado';
+    END IF;
+END$$
+
+-- 9 Log automático ao inserir nova espécie
+CREATE TRIGGER trg_especie_log
+AFTER INSERT ON Especies
+FOR EACH ROW
+INSERT INTO Logistica (Data_prevista, Comprovante_entrega)
+VALUES (CURDATE(), CONCAT('Nova espécie registrada: ', NEW.Tipo_esp));
+
+-- 10 Bloquear endereço com CEP inválido
+CREATE TRIGGER trg_endereco_cep
+BEFORE INSERT ON Endereco_agricultor
+FOR EACH ROW
+BEGIN
+    IF NEW.CEP NOT LIKE '_____-___' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'CEP inválido. Use o formato 00000-000';
+    END IF;
+END$$
+
+-- 11 Atualizar saldo do armazém ao inserir movimentação
+CREATE TRIGGER trg_lotes_update_validade
+BEFORE UPDATE ON Lotes
+FOR EACH ROW
+BEGIN
+    IF OLD.Validade <> NEW.Validade THEN
+        INSERT INTO Log_lotes (Numero_lote, Validade_antiga, Validade_nova)
+        VALUES (OLD.Numero_lote, OLD.Validade, NEW.Validade);
+    END IF;
+END $$
+
+-- 12 Registrar auditoria de novos agricultores
+CREATE TRIGGER trg_bloquear_delete_agricultor
+BEFORE DELETE ON Agricultores
+FOR EACH ROW
+BEGIN
+    DECLARE v_count INT;
+    
+    SELECT COUNT(*) INTO v_count
+    FROM Cadastro
+    WHERE CNPJ = OLD.CNPJ;
+    
+    IF v_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Não é permitido excluir agricultor com cadastros associados.';
+    END IF;
+END $$
+
+Delimiter ;
