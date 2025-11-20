@@ -1,0 +1,95 @@
+/* =====================================================
+   GERAL
+===================================================== */
+body {
+  background: #f4efe8;
+  margin: 0;
+  font-family: "Calibri", sans-serif;
+  color: #222;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 60px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.btn {
+  padding: 10px 25px;
+  border-radius: 40px;
+  font-size: 18px;
+  text-decoration: none;
+  display: inline-block;
+  color: #000;
+}
+
+.btn-light {
+  background: #e6e6e6;
+}
+
+.btn-green {
+  background: #b3d400;
+}
+
+/* =====================================================
+   CONTEÚDO PRINCIPAL
+===================================================== */
+.container {
+  padding: 20px 60px;
+}
+
+.texto-inicial {
+  font-size: 35px;
+  font-weight: 600;
+  max-width: 600px;
+  margin-bottom: 35px;
+}
+
+/* =====================================================
+   HERO IMAGE BOX
+===================================================== */
+.hero-box {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Ícone no canto superior direito */
+.icon-circle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
