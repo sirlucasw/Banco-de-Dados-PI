@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- ========= METADADOS ========= -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ========= TÍTULO DA PÁGINA ========= -->
+  <title>SeedTrak - Cadastro</title>
+
+  <!-- ========= CSS EXTERNO ========= -->
+  <link rel="stylesheet" href="/css/cadastro.css">
+
+  <!-- ========= VLibras ========= -->
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+</head>
+
+<body>
+
+  <!-- ========= LOGO SUPERIOR ESQUERDO ========= -->
+  <a href="/telas/index.html" class="logo">SEED<br>TRAK</a>
+
+  <!-- ========= PLUGIN VLibras ========= -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+
+  <!-- ========= CONTEÚDO CENTRAL ========= -->
+  <div class="container">
+
+    <h1>Cadastro</h1>
+
+    <!-- ========= FORMULÁRIO ========= -->
+    <form class="form">
+
+      <div class="input-box">
+        <label>Nome</label>
+        <input type="text" id="nome" />
+        <small class="erro"></small>
+      </div>
+
+      <div class="input-box">
+        <label>Email</label>
+        <input type="email" id="email" />
+        <small class="erro"></small>
+      </div>
+
+      <div class="input-box">
+        <label>Senha</label>
+        <input type="password" id="senha" />
+        <small class="erro"></small>
+      </div>
+
+      <button type="button" id="btnCadastrar" class="btn">Cadastrar</button>
+
+    </form>
+
+    <!-- ========= RODAPÉ ========= -->
+    <p class="footer">
+      Já tem conta?
+      <a href="/telas/entrar.html">Clique Aqui</a>
+      para Entrar
+    </p>
+
+  </div>
+
+  <!-- ========= POPUP DE CONFIRMAÇÃO ========= -->
+  <div id="popup" class="popup hidden">
+    <div class="popup-box">
+      <h2>Cadastro realizado!</h2>
+      <p>Seu cadastro foi concluído com sucesso.</p>
+      <button id="fecharPopup" class="popup-btn">Ok</button>
+    </div>
+  </div>
+
+  <!-- ========= JAVASCRIPT EXTERNO ========= -->
+  <script src="/Javascript/cadastro.js"></script>
+
+</body>
+</html>

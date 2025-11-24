@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esqueci a Senha - Email</title>
+
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="/css/newsenha.css">
+
+    <!-- ====== VLibras ====== -->
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+</head>
+
+<body>
+    <div class="nav-left">
+        <a href="/telas/index.html" class="logo">SEED<br>TRAK</a>
+    </div>
+
+    <main class="container">
+
+        <!-- Título -->
+        <h1 class="title">Esqueci a senha</h1>
+
+        <!-- Campo de Email -->
+        <div class="input-box">
+            <input type="email" id="emailInput" placeholder="Email">
+        </div>
+
+        <!-- Link SMS -->
+        <p class="sms-text">
+            Enviar por <a href="/telas/newsenhatel.html" class="sms-link">SMS</a>
+        </p>
+
+        <!-- Botão enviar -->
+        <button class="btn-enviar" id="btnEnviar">Enviar</button>
+
+    </main>
+
+    <!-- POPUP -->
+    <div id="popup" class="popup hidden">
+        <div class="popup-box">
+            <h2>Código enviado!</h2>
+            <p>Verifique seu email para continuar.</p>
+            <button id="popupOk" class="popup-btn">OK</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        const btnEnviar = document.getElementById("btnEnviar");
+        const popup = document.getElementById("popup");
+        const popupOk = document.getElementById("popupOk");
+
+        // Abrir popup ao enviar
+        btnEnviar.addEventListener("click", () => {
+            popup.classList.remove("hidden");
+        });
+
+        // Fechar popup e redirecionar
+        popupOk.addEventListener("click", () => {
+            window.location.href = "/telas/codigorec.html";
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digite o Código</title>
+    <link rel="stylesheet" href="/css/codigorec.css">
+     <!-- ====== VLibras ====== -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+</head>
+
+<body>
+  <div class="nav-left">
+        <a href="/telas/index.html" class="logo">SEED<br>TRAK</a>
+  </div>
+
+    <main class="container">
+
+        <!-- Título -->
+        <h1 class="title">Digite o Codigo</h1>
+
+        <!-- Inputs do código -->
+        <div class="code-box">
+            <input type="text" maxlength="1" class="code-input">
+            <input type="text" maxlength="1" class="code-input">
+            <input type="text" maxlength="1" class="code-input">
+            <input type="text" maxlength="1" class="code-input">
+        </div>
+
+        <!-- Texto do timer -->
+        <p class="resend">
+            Reenviar o Codigo <span id="timer">60s</span>
+        </p>
+
+        <!-- Botão Confirmar -->
+        <button class="btn-confirmar" id="btnConfirmar" disabled>Confirmar código</button>
+
+    </main>
+
+    <!-- ==== POPUP ==== -->
+    <div id="popup" class="popup-overlay">
+        <div class="popup-box">
+            <h2 class="popup-title">Código Confirmado!</h2>
+            <p class="popup-text">Seu código foi validado com sucesso.</p>
+            <button class="btn-green popup-btn" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+    <script src="/Javascript/codigo.js"></script>
+</body>
+</html>

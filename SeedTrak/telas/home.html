@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SeedTrak — Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/home.css">
+
+    <!-- VLibras Script -->
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+</head>
+
+<body>
+
+<!-- VLibras Widget (OBRIGATÓRIO NO BODY) -->
+<div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+
+<header class="navbar">
+
+    <div class="nav-left">
+        <a href="/telas/index.html" class="logo">SEED<br>TRAK</a>
+    </div>
+
+    <nav class="nav-center">
+        <a class="nav-item active" href="/telas/home.html">Início</a>
+        <a class="nav-item" href="/telas/campos.html">Campos</a>
+        <a class="nav-item" href="/telas/entregas.html">Entregas</a>
+        <a class="nav-item" href="/telas/perfil.html">Perfil</a>
+    </nav>
+
+    <div class="nav-right">
+        <button class="icon-btn">⚠</button>
+        <button class="icon-btn">🔔</button>
+    </div>
+
+</header>
+
+<!-- PAGE WRAPPER -->
+<div class="page">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="card indicators">
+
+            <h3>Indicadores</h3>
+
+            <div class="sensors">
+
+                <div class="sensor-card">
+                    <h4>Sensores</h4>
+
+                    <div class="sensor-list">
+                        <div><span class="big">8</span><span class="muted">Online</span></div>
+                        <div><span class="big">2</span><span class="muted">Bateria Baixa</span></div>
+                        <div><span class="big">0</span><span class="muted">Offline</span></div>
+                    </div>
+                </div>
+
+                <div class="clima-card">
+                    <h4>Clima</h4>
+
+                    <div class="temp">28°C</div>
+
+                    <div class="clima-meta">
+                        <div>16 km/h</div>
+                        <div>44%</div>
+                        <div>0 mm</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="harvest card-sub">
+                <h4>Colheita</h4>
+
+                <div class="harvest-value">15,4 <small>t/3m</small></div>
+
+                <div class="bars">
+
+                    <div class="bar">
+                        <span>Trigo</span>
+                        <div class="progress p1"></div>
+                        <small>6,4 t</small>
+                    </div>
+
+                    <div class="bar">
+                        <span>Milho</span>
+                        <div class="progress p2"></div>
+                        <small>3,2 t</small>
+                    </div>
+
+                    <div class="bar">
+                        <span>Tomate</span>
+                        <div class="progress p3"></div>
+                        <small>4,7 t</small>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <section class="top-row">
+            <!-- Conteúdo futuro -->
+        </section>
+    </main>
+
+</div> <!-- end page wrapper -->
+
+<script src="/js/home.js"></script>
+
+</body>
+</html>

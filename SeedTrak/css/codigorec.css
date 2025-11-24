@@ -1,0 +1,156 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== Layout Principal ===== */
+body {
+    background: #ffffff;
+}
+
+/* LOGO SUPERIOR ESQUERDO */
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 20px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 25px;
+}
+
+/* ===== Título ===== */
+.title {
+    font-size: 42px;
+    font-weight: 600;
+    color: #222;
+    margin-top: 40px;
+    margin-bottom: 80px;
+}
+
+/* ===== Inputs ===== */
+.code-box {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 40px;
+}
+
+.code-input {
+    width: 85px;
+    height: 110px;
+    font-size: 48px;
+    text-align: center;
+    border: 3px solid #BFBFBF;
+    border-radius: 22px;
+    outline: none;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.code-input:focus {
+    border-color: #4C6F58;
+    box-shadow: 0 0 10px #4c6f58a1;
+    transform: scale(1.05);
+}
+
+/* ===== Timer ===== */
+.resend {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #9fa6b2;
+}
+
+.resend span {
+    color: #9fa6b2;
+    font-weight: 500;
+}
+
+/* ===== Botão Confirmar ===== */
+.btn-confirmar {
+    width: 100%;
+    max-width: 400px;
+    background: #4C6F58;
+    color: #ffffff;
+    padding: 22px;
+    border: none;
+    border-radius: 18px;
+    font-size: 24px;
+    font-weight: 500;
+    cursor: pointer;
+    margin: 40px auto 0;
+    display: block;
+    transition: 0.2s;
+    opacity: 0.4;
+}
+
+.btn-confirmar.enabled {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.btn-confirmar.enabled:hover {
+    opacity: 0.9;
+}
+
+/* ===== POPUP ===== */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-box {
+    background: white;
+    width: 330px;
+    padding: 30px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.popup-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.popup-text {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.btn-green {
+    background-color: #4C6F58;
+    color: #fff;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-green:hover {
+    opacity: 0.9;
+}

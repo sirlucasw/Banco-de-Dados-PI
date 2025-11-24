@@ -1,0 +1,114 @@
+/* ======== GERAL ======== */
+body {
+  background: #ffffff;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+
+/* LOGO SUPERIOR ESQUERDO */
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 20px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.top-logo:hover {
+    opacity: 0.8;
+}
+
+
+/* ======== TÍTULO ======== */
+h1 {
+  font-size: 42px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+/* ======== INPUTS ======== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.input-box {
+  background: #f2ece5;
+  padding: 22px 25px;
+  border-radius: 22px;
+  text-align: left;
+}
+
+.input-box label {
+  font-size: 22px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+}
+
+/* ======== BOTÃO PRINCIPAL ======== */
+.btn {
+  background: #4d6f57;
+  color: white;
+  padding: 22px;
+  font-size: 22px;
+  font-weight: 500;
+  border-radius: 22px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  filter: brightness(0.95);
+}
+
+/* ======== TEXTO DO RODAPÉ ======== */
+.footer {
+  margin-top: 35px;
+  font-size: 16px;
+}
+
+.footer a {
+  color: #b2d400;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ======== BOTÃO "ESQUECI A SENHA" ======== */
+.forgot-btn {
+  margin-top: 40px;
+  background: #b2d400;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.forgot-btn:hover {
+  filter: brightness(0.95);
+}

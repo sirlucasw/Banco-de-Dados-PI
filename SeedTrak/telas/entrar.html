@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- ==== METADADOS ==== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ==== TÍTULO ==== -->
+  <title>SeedTrak - Entrar</title>
+
+  <!-- ==== CSS EXTERNO ==== -->
+  <link rel="stylesheet" href="/css/entrar.css" />
+
+  <!-- ==== VLibras ==== -->
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget("https://vlibras.gov.br/app");
+  </script>
+</head>
+
+<body>
+<!-- ==== LOGO SUPERIOR DIREITO ==== -->
+<div class="nav-left">
+        <a href="/telas/home.html" class="logo">SEED<br>TRAK</a>
+</div>
+
+  <!-- ==== PLUGIN VLibras ==== -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+
+  <!-- ==== CONTAINER CENTRAL ==== -->
+  <div class="container">
+
+    <h1>Entrar</h1>
+
+    <!-- ==== FORMULÁRIO ==== -->
+    <form class="form">
+
+      <!-- Email -->
+      <div class="input-box">
+        <label>Email</label>
+        <input type="email" id="email" />
+      </div>
+
+      <!-- Senha -->
+      <div class="input-box">
+        <label>Senha</label>
+        <input type="password" id="senha" />
+      </div>
+
+      <!-- Botão Entrar -->
+      <button type="button" class="btn" id="btnEntrar">Entrar</button>
+
+    </form>
+
+    <!-- ==== RODAPÉ ==== -->
+    <p class="footer">
+      Você não possui conta?
+      <a href="/telas/cadastro.html">Clique Aqui</a> para Cadastrar
+    </p>
+
+    <!-- Botão Esqueci a senha -->
+    <button class="forgot-btn" id="btnEsqueci">Esqueci a senha</button>
+
+  </div>
+
+  <!-- ==== SCRIPT DE FUNCIONALIDADE ==== -->
+  <script>
+    /* -----------------------------------------
+       BOTÃO "Entrar" → REDIRECIONA PARA HOME
+    ------------------------------------------ */
+    document.getElementById("btnEntrar").addEventListener("click", function () {
+      window.location.href = "/telas/home.html";
+    });
+
+    /* -------------------------------------------------
+       BOTÃO "Esqueci a senha" → PÁGINA DE RECUPERAÇÃO
+    -------------------------------------------------- */
+    document.getElementById("btnEsqueci").addEventListener("click", function () {
+      window.location.href = "/telas/newsenha.html"; 
+      // Altere para a página correta quando existir
+    });
+  </script>
+
+</body>
+</html>

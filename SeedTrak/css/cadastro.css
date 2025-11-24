@@ -1,0 +1,166 @@
+/* =====================================
+   ESTILOS GERAIS
+===================================== */
+body {
+  background: #ffffff;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+}
+
+/* LOGO SUPERIOR ESQUERDO */
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 20px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* CONTAINER PRINCIPAL */
+.container {
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+/* =====================================
+   TÍTULO
+===================================== */
+h1 {
+  font-size: 42px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+/* =====================================
+   FORMULÁRIO
+===================================== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* INPUTS */
+.input-box {
+  background: #f2ece5;
+  padding: 22px 25px;
+  border-radius: 22px;
+  text-align: left;
+}
+
+.input-box label {
+  font-size: 22px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+}
+
+/* =====================================
+   BOTÃO
+===================================== */
+.btn {
+  background: #4d6f57;
+  color: white;
+  padding: 22px;
+  font-size: 22px;
+  font-weight: 500;
+  border-radius: 22px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  filter: brightness(0.95);
+}
+
+/* =====================================
+   RODAPÉ (LOGIN)
+===================================== */
+.footer {
+  margin-top: 35px;
+  font-size: 16px;
+}
+
+.footer a {
+  color: #b2d400;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ============================
+   ERROS DO FORMULÁRIO
+============================ */
+.erro {
+  color: #d9534f;
+  font-size: 14px;
+  margin-top: 6px;
+  display: block;
+  height: 16px;
+}
+
+/* ============================
+   POPUP
+============================ */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn .25s ease-out;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup-box {
+  background: white;
+  width: 90%;
+  max-width: 380px;
+  padding: 30px;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  animation: scaleIn .25s ease-out;
+}
+
+.popup-btn {
+  background: #4d6f57;
+  color: white;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

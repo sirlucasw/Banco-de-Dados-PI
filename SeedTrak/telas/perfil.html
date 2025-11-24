@@ -1,0 +1,82 @@
+<!-- Perfil Page HTML Structure -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil - SeedTrak</title>
+    <link rel="stylesheet" href="/css/perfil.css" />
+
+    <!-- VLibras Script -->
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+</head>
+<body>
+
+<!-- VLibras Widget -->
+<div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+
+<header class="navbar">
+
+    <div class="nav-left">
+        <a href="/telas/index.html" class="logo">SEED<br>TRAK</a>
+    </div>
+
+    <nav class="nav-center">
+        <a class="nav-item" href="/telas/home.html">Início</a>
+        <a class="nav-item" href="/telas/campos.html">Campos</a>
+        <a class="nav-item" href="/telas/entregas.html">Entregas</a>
+        <a class="nav-item active" href="/telas/perfil.html">Perfil</a>
+    </nav>
+
+    <div class="nav-right">
+        <button class="icon-btn">⚠</button>
+        <button class="icon-btn">🔔</button>
+    </div>
+
+</header>
+
+<div class="container">
+
+    <h1 class="title">Perfil</h1>
+
+    <section class="profile-box">
+        <div class="photo-section">
+            <img src="/assets/lobixomem.jpeg" class="profile-pic" />
+            <button class="edit-btn">✎</button>
+        </div>
+
+        <div class="info-section">
+            <div class="info-row">
+                <span>Adamastor Frederico Nunes de Melo</span>
+                <button class="edit-small">✎</button>
+            </div>
+
+            <div class="info-row">
+                <span>Fazendeiro e Agricultor</span>
+                <button class="edit-small">✎</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="address-grid">
+        <div class="box">Góias (GO) <button>✎</button></div>
+        <div class="box">Chapada dos Veadeiros <button>✎</button></div>
+        <div class="box">Alto Paraíso de Goiás <button>✎</button></div>
+        <div class="box">73770-000 <button>✎</button></div>
+        <div class="box">1567 <button>✎</button></div>
+        <div class="box">(Complemento) <button>✎</button></div>
+        <div class="box">nº 1023-01 <button>✎</button></div>
+    </section>
+
+</div>
+
+</body>
+</html>
