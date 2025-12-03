@@ -1,4 +1,4 @@
-drop database banco_pi;
+  drop database banco_pi;
 
 ALTER TABLE `banco_pi`.`Agricultores`
 MODIFY COLUMN `CNPJ` VARCHAR(18) NOT NULL;
