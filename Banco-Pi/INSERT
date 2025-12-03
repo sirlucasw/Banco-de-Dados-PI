@@ -198,7 +198,7 @@ INSERT INTO `banco_pi`.`Agricultores` (`CNPJ`, `Nome`, `email`, `id_endereco`) V
 ('11.000.999/0001-78', 'Cooperativa Brasília Orgânicos', 'coopbsb@organicos.com', 20);
 
 
-INSERT INTO `banco_pi`.`Armazens` (`Tipo_produto`, `Quantidade`, `Unidade_medida`, `data_validade`, `Data_cadastro`, `Status_produto`, `Numero_lote`) VALUES
+INSERT INTO `banco_pi`.`armazens` (`Tipo_produto`, `Quantidade`, `Unidade_medida`, `data_validade`, `Data_cadastro`, `Status_produto`, `Numero_lote`) VALUES
 ('Grãos', 2500, 'KG', '2025-06-30', '2024-09-01', 'Em Estoque', 1),
 ('Grãos', 3000, 'KG', '2025-05-30', '2024-08-20', 'Em Estoque', 2),
 ('Grãos', 500, 'Sacas', '2026-12-31', '2024-10-01', 'Em Estoque', 3),
